@@ -1,0 +1,140 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="src/css/rowsDrawer.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-device-width: 375) {
+            body {
+                -webkit-transform: scale(0.906);
+                -webkit-transform-origin: top left;
+            }
+        }
+
+        @media (max-device-width: 320) {
+            body {
+                -webkit-transform: scale(0.77299);
+                -webkit-transform-origin: top left;
+            }
+        }
+        /* Below is only used for demo */
+
+        #trigger {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: red;
+        }
+    </style>
+</head>
+
+<body onunload="iconDrawer.enablePaging()">
+
+    <!-- APP DRAWER -->
+    <div id="appDrawerDiv" class="appContainer">
+        <div class="appOptions" id="appOptions">
+            <span id="edit">Z</span>
+            <span id="fav" class="activeButton">Favs</span>
+            <span id="all">All</span>
+            <span id="more">Alerts</span>
+            <span id="close">2</span>
+            <div class="searchIcon">&#9906;</div>
+            <input type="text" class="searchBox" title="search" id="newSearch" placeholder="Search" onblur="this.value = ''" onkeyup="appDrawer.searchApp()" />
+        </div>
+        <ul id="iconContainer"></ul>
+    </div>
+    <!-- END DRAWER -->
+
+    <!-- ONLY FOR DEMO -->
+    <div id="trigger" onclick="appDrawer.showDrawer()"></div>
+    <!-- ONLY FOR DEMO -->
+
+    <script src="src/js/blacklist.js" type="text/javascript"></script>
+    <script src="src/js/bundles.js" type="text/javascript"></script>
+
+    <script>
+    /* Drawer arrays also used by cycript to add info */
+    var appInfo = [],
+        favInfo = [];
+    </script>
+    <script type="text/cycript">
+    NSLog_ = dlsym(RTLD_DEFAULT, "NSLog")
+    NSLog = function() { var types = 'v', args = [], count = arguments.length; for (var i = 0; i != count; ++i) { types += '@'; args.push(arguments[i]); } new Functor(NSLog_, types).apply(null, args); }
+    var iconDrawer = {
+      readDict : function(url){
+          return [NSDictionary dictionaryWithContentsOfFile: @"" + url];
+      },
+      openAppDrawer: function(){
+        [[SBUIController sharedInstance] openAppDrawer];
+      },
+      openFern: function (){
+        [[LAActivator sharedInstance]sendEvent:fernEvent toListenerWithName:@"com.brycedev.fern.listener"];
+      },
+      openInstaLauncher: function(){
+        [[LAActivator sharedInstance]sendEvent:instaEvent toListenerWithName:@"com.jontelang.instalauncher"];
+      },
+      openSwitcher: function(){
+        [[SBUIController sharedInstanceIfExists]handleMenuDoubleTap];
+      },
+      existsInArray : function (array, value){
+          return [array containsObject:@"" + value];
+      },
+      getAppList : function() {
+         return [[SBApplicationController sharedInstance] allApplications];
+      },
+      getFavList : function(bundle, name){
+        favInfo.push(name + '-' + bundle);
+      },
+      getIconImage: function(iconBundle){
+        return 'data:image/png;base64,' + [UIImagePNGRepresentation([[[[SBIconController sharedInstance] model] expectedIconForDisplayIdentifier:@"" + iconBundle] getIconImage:2]) base64Encoding];
+        //return [IS2System getApplicationIconForBundleIdentifierBase64:iconBundle];
+      },
+      openApp: function(app){
+        [IS2System openApplication:@"" + app]; //open app
+        [[SBIconController sharedInstance]setLastTouchedIcon:[[[SBIconController sharedInstance] model] applicationIconForBundleIdentifier:@"" + app]]; //set as last app opened
+      },
+      openUrl: function (url) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@""+url]];
+      },
+      openSearch: function(){
+        //[[SpringBoard sharedApplication] _revealSpotlight];
+        [[SBSearchGesture sharedInstance] revealAnimated:NO];
+      },
+      openSiri: function(){
+        [[SBAssistantController sharedInstance] _activateSiriForPPT];
+      },
+      openLast: function(){
+        iconDrawer.openApp([[[SBIconController sharedInstance]lastTouchedIcon]applicationBundleID]);
+      },
+      getNotificationCount : function(bundle){
+          try{ return SBIconController.sharedInstance.model.leafIconsByIdentifier[String(bundle)].badgeValue; }catch(err){}
+          //try{ return [IS2Notifications notificationCountForApplication:bundle]}catch(err){alert(err);}
+      },
+      getScrollView: function (){
+        return [[SBIconController sharedInstance]currentRootIconList].viewsUnder;
+      },
+      disablePaging: function(){
+        [referenceScrollView removeGestureRecognizer: [referenceScrollView panGestureRecognizer]];
+      },
+      enablePaging: function(){
+        [referenceScrollView addGestureRecognizer: [referenceScrollView panGestureRecognizer]];
+      }
+    };
+    </script>
+    <script src="src/js/appLauncher.js" type="text/javascript"></script>
+
+</body>
+
+</html>
