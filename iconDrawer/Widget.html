@@ -12,19 +12,24 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -webkit-overflow-scrolling: touch;
+            -webkit-transform-origin: top left;
         }
 
         @media (max-device-width: 375) {
             body {
                 -webkit-transform: scale(0.906);
-                -webkit-transform-origin: top left;
             }
+        }
+
+        @media (max-device-width: 425) { /* If use uses upscale i6 upscaled to 6s+ */
+          body{
+            -webkit-transform:scale(1.03);
+          }
         }
 
         @media (max-device-width: 320) {
             body {
                 -webkit-transform: scale(0.77299);
-                -webkit-transform-origin: top left;
             }
         }
         /* Below is only used for demo */
