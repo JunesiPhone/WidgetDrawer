@@ -155,7 +155,7 @@ This is the default layout which must be defined in the html. If a user chooses 
     font-size: 27px;
     opacity: 0.5;
 }
-input {
+input#newSearch {
     position: absolute;
     top: 80px;
     left: 0;
@@ -170,7 +170,7 @@ input {
     border-radius: 0;
     z-index: 1;
 }
-input:focus::-webkit-input-placeholder {
+input#newSearch:focus::-webkit-input-placeholder {
     color: transparent;
 }
 .activeButton {
