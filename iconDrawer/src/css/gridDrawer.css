@@ -1,6 +1,6 @@
 /*
 
-Grid Layout 
+Grid Layout
 This css file must be loaded after rowsDrawer.css rowsDrawer.css is defined in the html and has the majority of the code
 
 */
@@ -25,12 +25,15 @@ This css file must be loaded after rowsDrawer.css rowsDrawer.css is defined in t
     width: 70px;
 }
 .appContainer label {
-    left: 0px;
+    position: absolute;
+    left: -20px;
     top: 55px;
     font-size: 12px;
-    width: 100%;
+    width: 105px;
     text-align: center;
+    font-size: 12px;
     line-height: 60px;
+    overflow: hidden;
 }
 #close, #edit {
     font-size: 20px;

@@ -50,12 +50,9 @@ This is the default layout which must be defined in the html. If a user chooses 
 }
 .appContainer label {
     position: absolute;
-    height: 50px;
-    left: -20px!important;
-    width: 105px!important;
+    left: 40px;
     font-size: 20px;
     line-height: 60px;
-    overflow: hidden;
     color: white;
 }
 .appOptions {
