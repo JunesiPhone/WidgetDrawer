@@ -54,6 +54,7 @@ var appDrawer = {
     allButton: document.getElementById('all'),
     moreButton: document.getElementById('more'),
     editText: document.getElementById('edit'),
+    cache: {},
     clearDiv: function (divID) {
         var div = document.getElementById(divID);
         while (div.firstChild) {
@@ -124,7 +125,7 @@ var appDrawer = {
         appDrawer.editText.innerHTML = edit;
     },
     checkBundle: function (bundle) {
-      /* Fixes for icon images */
+        /* Fixes for icon images */
         if (bundle === 'com.agilebits.onepassword') {
             bundle = 'com.agilebits.onepassword-ios';
         }
@@ -143,7 +144,7 @@ var appDrawer = {
         return bundle;
     },
     checkApp: function (app) {
-      /* fixes for icon bundles (to open the app) */
+        /* fixes for icon bundles (to open the app) */
         if (app === 'com.agilebits.onepassword') {
             app = 'com.agilebits.onepassword-ios';
         }
@@ -256,7 +257,12 @@ var appDrawer = {
         for (i = 0; i < array.length; i += 1) {
             name = array[i].split('-')[0];
             bundle = array[i].split('-')[1];
-            icon = iconDrawer.getIconImage(appDrawer.checkBundle(bundle));
+            if (bundle in appDrawer.cache) {
+                icon = appDrawer.cache[bundle];
+            } else {
+                icon = iconDrawer.getIconImage(appDrawer.checkBundle(bundle));
+                appDrawer.cache[bundle] = icon;
+            }
 
             if (icon.split(',')[1] !== 'null') { // check if icon image is valid
                 badge = iconDrawer.getNotificationCount(appDrawer.checkBundle(bundle));
@@ -546,6 +552,7 @@ You must enable paging when the widget is closed. You can do this through <body 
 
 
 var referenceScrollView;
+
 function disablePaging() {
     var i,
         scrollView = iconDrawer.getScrollView(),
