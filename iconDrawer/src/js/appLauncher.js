@@ -351,20 +351,18 @@ var appDrawer = {
         }
     },
     moreApps: function () {
+        appInfo = [];
+        appDrawer.checkBadges();
         appDrawer.toggleButton('more');
         this.hideFavs();
         this.clearDiv('iconContainer');
         this.createItemForLauncher(appInfo, true);
     },
-    initializeAppDrawer: function () {
-        appDrawer.loadCss();
-        var applications = iconDrawer.getAppList(), //gets app list, and makes array of apps (Cycript)
+    checkBadges: function () {
+        var applications = iconDrawer.getAppList(),
             i,
-            s,
-            displayNames,
             bundle,
-            storage;
-
+            displayNames;
         //loop through each one and make new array
         for (i = 0; i < applications.length; i += 1) {
             displayNames = applications[i].displayName;
@@ -375,6 +373,14 @@ var appDrawer = {
         }
         appInfo.sort();
         applications = null; //don't need a reference
+
+    },
+    initializeAppDrawer: function () {
+        appDrawer.loadCss();
+        appDrawer.checkBadges();
+        var s,
+            storage;
+
 
         //loop over stored favorites
         if (this.savedLocalStorage()) {
