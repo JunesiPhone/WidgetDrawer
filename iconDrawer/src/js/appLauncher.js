@@ -257,7 +257,7 @@ var appDrawer = {
         for (i = 0; i < array.length; i += 1) {
             name = array[i].split('-')[0];
             bundle = array[i].split('-')[1];
-            if (bundle in appDrawer.cache) {
+            if (appDrawer.cache.hasOwnProperty(bundle)) {
                 icon = appDrawer.cache[bundle];
             } else {
                 icon = iconDrawer.getIconImage(appDrawer.checkBundle(bundle));
